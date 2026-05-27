@@ -1,0 +1,58 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ipo_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-rootpassword}
+      MYSQL_DATABASE:      ipo_platform
+      MYSQL_USER:          ipo_user
+      MYSQL_PASSWORD:      ${DB_PASSWORD:-rootpassword}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./node-backend/src/migrations/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  node-backend:
+    build: ./node-backend
+    container_name: ipo_node
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      PORT:               3000
+      NODE_ENV:           production
+      DB_HOST:            mysql
+      DB_PORT:            3306
+      DB_USER:            ipo_user
+      DB_PASSWORD:        ${DB_PASSWORD:-rootpassword}
+      DB_NAME:            ipo_platform
+      PYTHON_SERVICE_URL: http://python-service:8000
+      FRONTEND_URL:       ${FRONTEND_URL:-*}
+    ports:
+      - "3000:3000"
+
+  python-service:
+    build: ./python-service
+    container_name: ipo_python
+    restart: unless-stopped
+    environment:
+      PORT:        8000
+      USE_MOCK_ML: ${USE_MOCK_ML:-true}
+      MODEL_DIR:   /home/models
+    volumes:
+      - ./models:/home/models     # mount your trained model files here
+    ports:
+      - "8000:8000"
+
+volumes:
+  mysql_data:

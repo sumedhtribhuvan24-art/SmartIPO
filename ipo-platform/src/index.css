@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-headline: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --color-primary: #003d9b;
+  --color-primary-container: #0052cc;
+  --color-secondary: #006b5c;
+  --color-secondary-container: #68fadd;
+  --color-tertiary: #003b9e;
+  --color-tertiary-container: #0050d0;
+  --color-surface: #f7f9fb;
+  --color-on-surface: #191c1e;
+  --color-on-surface-variant: #434654;
+  --color-outline: #737685;
+  --color-outline-variant: #c3c6d6;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+}
+
+@layer base {
+  body {
+    @apply bg-surface text-on-surface font-sans;
+  }
+}
+
+.glass-nav {
+  @apply bg-white/80 backdrop-blur-md;
+}
+
+.primary-gradient {
+  background: linear-gradient(135deg, #003d9b 0%, #0052cc 100%);
+}
+
+.markdown-container {
+  @apply text-on-surface leading-relaxed;
+}
+
+.rounded-4xl {
+  border-radius: 2rem;
+}
+
+.markdown-container h1 {
+  @apply text-3xl md:text-4xl font-black font-headline mt-10 mb-8 text-primary border-b-2 border-primary/10 pb-4;
+}
+
+.markdown-container h2 {
+  @apply text-2xl md:text-3xl font-black font-headline mt-12 mb-6 text-primary flex items-center gap-3;
+}
+
+.markdown-container h3 {
+  @apply text-xl md:text-2xl font-bold font-headline mt-10 mb-5 text-secondary flex items-center gap-2;
+}
+
+.markdown-container p {
+  @apply mb-6 text-lg leading-relaxed text-on-surface-variant font-medium;
+}
+
+.markdown-container ul, .markdown-container ol {
+  @apply mb-8 ml-4 list-none space-y-4;
+}
+
+.markdown-container li {
+  @apply relative pl-8 text-on-surface-variant font-medium text-lg;
+}
+
+.markdown-container ul li::before {
+  content: "•";
+  @apply absolute left-0 text-primary font-black text-2xl leading-none top-1;
+}
+
+.markdown-container ol {
+  counter-reset: item;
+}
+
+.markdown-container ol li::before {
+  counter-increment: item;
+  content: counter(item) ".";
+  @apply absolute left-0 text-primary font-black text-lg;
+}
+
+.markdown-container table {
+  @apply w-full border-collapse mb-12 bg-white shadow-xl rounded-3xl overflow-hidden border border-outline-variant/20 block lg:table overflow-x-auto;
+}
+
+.markdown-container th, .markdown-container td {
+  @apply p-6 text-left text-sm border-b border-outline-variant/10;
+}
+
+.markdown-container th {
+  @apply bg-slate-50/80 font-black uppercase tracking-[0.2em] text-[10px] text-on-surface-variant;
+}
+
+.markdown-container td {
+  @apply font-medium text-on-surface;
+}
+
+.markdown-container blockquote {
+  @apply border-l-8 border-primary/20 pl-10 my-12 italic text-on-surface-variant bg-primary/5 py-8 rounded-r-3xl text-xl;
+}
