@@ -39,7 +39,7 @@ ipo-platform/
 └── vite.config.ts
 🚀 Installation & Setup
 Clone Repository
-git clone https://github.com/your-username/SmartIPO.git
+git clone https://github.com/sumedhtribhuvan-art/SmartIPO.git
 cd SmartIPO
 Install Frontend Dependencies
 npm install
